@@ -1,9 +1,8 @@
-const size = 18;
+const size = 26; // 🔥 mai mare + mai multe rânduri/coloane
 
 /* =========================
    VERIFICARE PLASARE
 ========================= */
-
 function canPlaceWord(grid, word, row, col, direction) {
   for (let i = 0; i < word.length; i++) {
     let r = row;
@@ -29,12 +28,10 @@ function canPlaceWord(grid, word, row, col, direction) {
    PRELUARE CUVINTE
 ========================= */
 function getWords() {
-  const input = document.getElementById("wordsInput").value;
-
-  return input
+  return document.getElementById("wordsInput").value
     .split(",")
     .map(w => w.trim().toUpperCase())
-    .filter(w => w.length > 0);
+    .filter(w => w);
 }
 
 /* =========================
@@ -42,32 +39,24 @@ function getWords() {
 ========================= */
 function generate() {
   const title = document.getElementById("titleInput").value || "Fișă de lucru";
-  const titleEl = document.getElementById("sheetTitle");
+  document.getElementById("sheetTitle").innerText = title;
 
-  if (titleEl) {
-    titleEl.innerText = title;
-  }
-
-  const grid = [];
-
-  for (let i = 0; i < size; i++) {
-    grid[i] = [];
-    for (let j = 0; j < size; j++) {
-      grid[i][j] = "";
-    }
-  }
+  const grid = Array.from({ length: size }, () =>
+    Array.from({ length: size }, () => "")
+  );
 
   const words = getWords();
 
   words.forEach(word => {
     let placed = false;
 
-    for (let attempt = 0; attempt < 50 && !placed; attempt++) {
+    for (let attempt = 0; attempt < 100 && !placed; attempt++) {
 
       const directions = ["horizontal", "vertical", "diagonal"];
       const direction = directions[Math.floor(Math.random() * directions.length)];
 
-      let row, col;
+      let row = 0;
+      let col = 0;
 
       if (direction === "horizontal") {
         row = Math.floor(Math.random() * size);
@@ -103,7 +92,7 @@ function generate() {
 
   draw(grid);
 
-    const listContainer = document.getElementById("wordList");
+  const listContainer = document.getElementById("wordList");
 
   if (listContainer) {
     listContainer.innerHTML = "<h3>Cuvinte:</h3>";
@@ -120,12 +109,18 @@ function generate() {
     listContainer.appendChild(wrapper);
   }
 }
+
 /* =========================
    DESENARE GRID
 ========================= */
 function draw(grid) {
   const container = document.getElementById("grid");
-  container.innerHTML = "";
+
+  container.innerHTML = ""; // 🔥 IMPORTANT (reset corect)
+
+   container.style.display = "grid";
+  container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+  container.style.gap = "0px";
 
   grid.forEach(row => {
     row.forEach(cell => {
@@ -136,14 +131,14 @@ function draw(grid) {
     });
   });
 }
+
+/* =========================
+   PDF
+========================= */
 async function downloadPDF() {
   try {
     const { jsPDF } = window.jspdf;
     const sheet = document.getElementById("sheet");
-
-    // scoatem efecte vizuale
-    const originalShadow = sheet.style.boxShadow;
-    const originalRadius = sheet.style.borderRadius;
 
     sheet.style.boxShadow = "none";
     sheet.style.borderRadius = "0px";
@@ -162,25 +157,9 @@ async function downloadPDF() {
     const pageWidth = 210;
     const pageHeight = 297;
 
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
 
-    // 🔥 IMPORTANT: crop pe înălțime A4 fix
-    pdf.addImage(
-      imgData,
-      "PNG",
-      0,
-      0,
-      imgWidth,
-      pageHeight
-    );
-
-    const pdfUrl = pdf.output("bloburl");
-    window.open(pdfUrl, "_blank");
-
-    // restaurăm UI
-    sheet.style.boxShadow = originalShadow;
-    sheet.style.borderRadius = originalRadius;
+    window.open(pdf.output("bloburl"), "_blank");
 
   } catch (err) {
     console.error(err);
