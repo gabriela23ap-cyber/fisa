@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
-  <title>Generator fișă de lucru</title>
+  <title>Cuvinte ascunse</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 
@@ -131,11 +131,10 @@ box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   ========================= */
   #grid {
     display: grid;
-    grid-template-columns: repeat(18, 1fr);
-    gap: 0;
     width: 100%;
-    max-width: 180mm;
+    max-width: 100%;
     margin: 10px auto;
+    justify-content: stretch;
   }
 
   .cell {
@@ -144,10 +143,12 @@ box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 
   font-weight: 500;
-  font-size: 14px;
+  font-size: 15px;
   font-family: 'Poppins', sans-serif;
+  line-height: 1;
 
   color: #111;
 }
@@ -158,9 +159,9 @@ box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   #wordList {
   margin-top: 20px;
   padding-top: 10px;
-  border-top: 1px solid #e5e5e5;
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
 }
 
 #wordList h3 {
@@ -169,7 +170,7 @@ box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 
 .words-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 4px 20px;
 }
  /* =========================
