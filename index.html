@@ -140,22 +140,38 @@ box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 
   .cell {
   aspect-ratio: 1 / 1;
-  border: 1px solid #999;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 13px;
+
+  font-weight: 500;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+
+  color: #111;
 }
 
   /* =========================
      WORD LIST
   ========================= */
   #wordList {
-    margin-top: auto;
-    text-align: left;
-    font-size: 14px;
-  }
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e5e5;
+  text-align: left;
+  font-size: 14px;
+}
+
+#wordList h3 {
+  margin-bottom: 8px;
+}
+
+.words-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 20px;
+}
  /* =========================
    EXTRA STYLING (UI IMPROVEMENTS)
 ========================= */
@@ -219,9 +235,9 @@ button {
     }
 
     #sheet {
-      box-shadow: none;
-      border: none;
-    }
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
 
     @page {
       size: A4;
