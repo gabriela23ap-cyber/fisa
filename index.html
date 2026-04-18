@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Generator fișă de lucru</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+
+  <style>
+  /* =========================
+     BODY + LAYOUT APP
+  ========================= */
+  body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f2f2f2;
+}
+
+  #app {
+    display: flex;
+    height: 100vh;
+  }
+
+  /* =========================
+     LEFT PANEL (CONTROALE)
+  ========================= */
+ #leftPanel {
+  width: 320px;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+  input, textarea {
+  width: 90%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin: 8px 0;
+  font-size: 14px;
+}
+ button {
+  padding: 12px 22px;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+  /* =========================
+     RIGHT PANEL (FOAIE)
+  ========================= */
+  #rightPanel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  overflow: auto;
+  background: #e5e7eb;
+}
+
+  /* =========================
+     A4 SHEET
+  ========================= */
+  #sheet {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 12mm;
+
+    background: white;
+    border: 1px solid #ccc;
+
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  /* =========================
+     HEADER
+  ========================= */
+  #sheetHeader {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  #sheetTitle {
+    text-align: center;
+    margin: 5px 0 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  /* =========================
+     GRID
+  ========================= */
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: 0;
+    width: 100%;
+    max-width: 180mm;
+    margin: 10px auto;
+  }
+
+  .cell {
+  aspect-ratio: 1 / 1;
+  border: 1px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+  /* =========================
+     WORD LIST
+  ========================= */
+  #wordList {
+    margin-top: auto;
+    text-align: left;
+    font-size: 14px;
+  }
+ /* =========================
+   EXTRA STYLING (UI IMPROVEMENTS)
+========================= */
+
+/* 4. Titlu panou stânga */
+.hero {
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.hero h1 {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #ffffff;
+  letter-spacing: -1px;
+}
+
+.hero p {
+  font-size: 15px; /* puțin mai mare */
+  color: rgba(255,255,255,0.75);
+  line-height: 1.4;
+}
+
+/* 5. Texte "Titlu fișă", "Cuvinte" */
+.instructions {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-top: 10px;
+}
+
+/* 6. Butoane full width */
+button {
+  display: block;
+  width: 100%;
+}
+
+/* 7. Titlu foaie mai stilizat */
+#sheetTitle {
+  text-align: center;
+  margin: 10px 0 15px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+  /* =========================
+     PRINT
+  ========================= */
+  @media print {
+    body {
+      background: white;
+    }
+
+    #leftPanel {
+      display: none;
+    }
+
+    #rightPanel {
+      background: #e5e7eb;
+      padding: 0;
+    }
+
+    #sheet {
+      box-shadow: none;
+      border: none;
+    }
+
+    @page {
+      size: A4;
+      margin: 10mm;
+    }
+  }
+  </style>
+</head>
+
+<body>
+
+<div id="app">
+
+  <!-- ================= LEFT (CONTROL) ================= -->
+  <div id="leftPanel">
+
+    <div class="hero">
+  <h1>Cuvinte ascunse</h1>
+  <p>Creează rapid fișe de tip Word Search pentru clasă sau acasă</p>
+</div>
+    
+    <div class="instructions">
+  Titlu fișă:
+</div>
+
+
+    <input id="titleInput" placeholder="ex. Arta românească în sec. XX">
+    
+  <div class="instructions">
+  Cuvinte:
+</div>
+
+    <textarea id="wordsInput" rows="6" placeholder="ARTĂ, PICTOR, REALISM"></textarea>
+    <button onclick="generate()">Generează fișa</button>
+    <button onclick="downloadPDF()">Descarcă PDF</button>
+    
+
+  </div>
+
+  <!-- ================= RIGHT (A4 SHEET) ================= -->
+  <div id="rightPanel">
+
+    <div id="sheet">
+
+      <div id="sheetHeader">
+        <div>Nume: ____________________</div>
+        <div>Data: ______________</div>
+      </div>
+
+      <h2 id="sheetTitle"></h2>
+
+      <div id="grid"></div>
+
+      <div id="wordList"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
