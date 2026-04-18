@@ -103,13 +103,23 @@ function generate() {
 
   draw(grid);
 
-  const listContainer = document.getElementById("wordList");
+    const listContainer = document.getElementById("wordList");
+
   if (listContainer) {
     listContainer.innerHTML = "<h3>Cuvinte:</h3>";
-    listContainer.innerHTML += words.join(", ");
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "words-grid";
+
+    words.forEach(word => {
+      const div = document.createElement("div");
+      div.innerText = word;
+      wrapper.appendChild(div);
+    });
+
+    listContainer.appendChild(wrapper);
   }
 }
-
 /* =========================
    DESENARE GRID
 ========================= */
@@ -129,23 +139,48 @@ function draw(grid) {
 async function downloadPDF() {
   try {
     const { jsPDF } = window.jspdf;
-
     const sheet = document.getElementById("sheet");
 
-    const canvas = await html2canvas(sheet, { scale: 2 });
+    // scoatem efecte vizuale
+    const originalShadow = sheet.style.boxShadow;
+    const originalRadius = sheet.style.borderRadius;
+
+    sheet.style.boxShadow = "none";
+    sheet.style.borderRadius = "0px";
+
+    const canvas = await html2canvas(sheet, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0
+    });
 
     const imgData = canvas.toDataURL("image/png");
 
     const pdf = new jsPDF("p", "mm", "a4");
 
-    const imgWidth = 210;
+    const pageWidth = 210;
+    const pageHeight = 297;
+
+    const imgWidth = pageWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    // 🔥 IMPORTANT: crop pe înălțime A4 fix
+    pdf.addImage(
+      imgData,
+      "PNG",
+      0,
+      0,
+      imgWidth,
+      pageHeight
+    );
 
-    // 👉 deschide preview în tab nou
     const pdfUrl = pdf.output("bloburl");
     window.open(pdfUrl, "_blank");
+
+    // restaurăm UI
+    sheet.style.boxShadow = originalShadow;
+    sheet.style.borderRadius = originalRadius;
 
   } catch (err) {
     console.error(err);
